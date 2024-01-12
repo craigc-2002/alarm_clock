@@ -8,7 +8,6 @@
  * To Do:
  * - use timer to update display with time every 100ms
  * - sleep the processor between updates
- * - implement holding buttons
  * - display function of each button on screen
  */
 
@@ -79,14 +78,14 @@ int main()
             {
                 display_date_time(&display, &t);
 
-                if (button_1_pressed)
+                if (button_1.pressed)
                 {
                     current_mode = TIME_EDIT;
-                    button_1_pressed = false;
+                    button_1.pressed = false;
                 }
-                if (button_2_pressed) button_2_pressed = false;
-                if (button_3_pressed) button_3_pressed = false;
-                if (button_4_pressed) button_4_pressed = false;
+                if (button_2.pressed) button_2.pressed = false;
+                if (button_3.pressed) button_3.pressed = false;
+                if (button_4.pressed) button_4.pressed = false;
 
                 break;
             }
@@ -95,7 +94,7 @@ int main()
             {
                 bool time_updated = false;
 
-                if (button_1_pressed)
+                if (button_1.pressed)
                 {
                     if (current_edit_part == HOUR)
                     {
@@ -113,10 +112,10 @@ int main()
                         }
                     }
                     
-                    button_1_pressed = false; // clear button press flag
+                    button_1.pressed = false; // clear button press flag
                 }
 
-                if (button_2_pressed)
+                if (button_2.pressed || button_2.held)
                 {
                     switch (current_edit_part)
                     {
@@ -134,10 +133,10 @@ int main()
                     }
                     
                     time_updated = true;
-                    button_2_pressed = false;
+                    button_2.pressed = false;
                 }
 
-                if (button_3_pressed)
+                if (button_3.pressed || button_3.held)
                 {
                     switch (current_edit_part)
                     {
@@ -155,13 +154,14 @@ int main()
                     }
                     
                     time_updated = true;
-                    button_3_pressed = false;
+                    button_3.pressed = false;
                 }
 
-                if (button_4_pressed)
+                if (button_4.pressed)
                 {
                     if (current_edit_part == MIN)
                     {
+                        current_edit_part = HOUR; // reset to edit the hour place
                         current_mode = TIME_DISPLAY; // exit from time edit mode
                     }else                    
                     {
@@ -176,7 +176,7 @@ int main()
                         }
                     }
 
-                    button_4_pressed = false;
+                    button_4.pressed = false;
                 }
 
                 if (time_updated)

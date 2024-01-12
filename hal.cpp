@@ -1,7 +1,7 @@
 /* alarm_clock
  * Craig Cochrane, 2023
  *
- * hal.c
+ * hal.cpp
  *
  * Hardware abstraction layer for alarm clock inputs and outputs
  */
@@ -15,37 +15,65 @@
 #include "textRenderer/TextRenderer.h"
 #include <cstdio>
 
-// globals
-bool button_1_pressed = false;
-bool button_2_pressed = false;
-bool button_3_pressed = false;
-bool button_4_pressed = false;
+// global button variables to store button presses and holds
+Button button_1;
+Button button_2;
+Button button_3;
+Button button_4;
 
 // GPIO IRQ handler for button press events
 void button_irq_handler(void)
 {
-    if (gpio_get_irq_event_mask(BUTTON_1) & GPIO_IRQ_EDGE_RISE)
+    // check for button 1 events
+    uint32_t event_mask = gpio_get_irq_event_mask(BUTTON_1);
+    if (event_mask & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(BUTTON_1, GPIO_IRQ_EDGE_RISE);
-        button_1_pressed = true;
+        button_1.pressed = true;
+        button_1.held = true;
+    }else if (event_mask & GPIO_IRQ_EDGE_FALL)
+    {
+        gpio_acknowledge_irq(BUTTON_1, GPIO_IRQ_EDGE_FALL);
+        button_1.held = false;
     }
 
+    event_mask = gpio_get_irq_event_mask(BUTTON_2);
     if (gpio_get_irq_event_mask(BUTTON_2) & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(BUTTON_2, GPIO_IRQ_EDGE_RISE);
-        button_2_pressed = true;
+        button_2.pressed = true;
+        button_2.held = true;
+    }
+    else if (event_mask & GPIO_IRQ_EDGE_FALL)
+    {
+        gpio_acknowledge_irq(BUTTON_2, GPIO_IRQ_EDGE_FALL);
+        button_2.held = false;
     }
 
+    event_mask = gpio_get_irq_event_mask(BUTTON_3);
     if (gpio_get_irq_event_mask(BUTTON_3) & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(BUTTON_3, GPIO_IRQ_EDGE_RISE);
-        button_3_pressed = true;
+        button_3.pressed = true;
+        button_3.held = true;
+    }
+    else if (event_mask & GPIO_IRQ_EDGE_FALL)
+    {
+        gpio_acknowledge_irq(BUTTON_3, GPIO_IRQ_EDGE_FALL);
+        button_3.held = false;
     }
 
+    event_mask = gpio_get_irq_event_mask(BUTTON_4);
     if (gpio_get_irq_event_mask(BUTTON_4) & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(BUTTON_4, GPIO_IRQ_EDGE_RISE);
-        button_4_pressed = true;
+        button_4.pressed = true;
+        button_4.held = true;
+    }
+    else if (event_mask & GPIO_IRQ_EDGE_FALL)
+    {
+        gpio_acknowledge_irq(BUTTON_4, GPIO_IRQ_EDGE_FALL);
+        button_4.held = false;
     }
 }
 
@@ -59,10 +87,17 @@ void setup_buttons(void)
 
     // set up IRQ handlers for button inputs
     gpio_add_raw_irq_handler_masked(button_input_mask, button_irq_handler);
+
     gpio_set_irq_enabled(BUTTON_1, GPIO_IRQ_EDGE_RISE, true);
     gpio_set_irq_enabled(BUTTON_2, GPIO_IRQ_EDGE_RISE, true);
     gpio_set_irq_enabled(BUTTON_3, GPIO_IRQ_EDGE_RISE, true);
     gpio_set_irq_enabled(BUTTON_4, GPIO_IRQ_EDGE_RISE, true);
+
+    gpio_set_irq_enabled(BUTTON_1, GPIO_IRQ_EDGE_FALL, true);
+    gpio_set_irq_enabled(BUTTON_2, GPIO_IRQ_EDGE_FALL, true);
+    gpio_set_irq_enabled(BUTTON_3, GPIO_IRQ_EDGE_FALL, true);
+    gpio_set_irq_enabled(BUTTON_4, GPIO_IRQ_EDGE_FALL, true);
+
     irq_set_enabled(IO_IRQ_BANK0, true);
 }
 
