@@ -3,7 +3,7 @@
  *
  * button.hpp
  *
- * Hardware abstraction layer for alarm clock inputs and outputs
+ * Hardware abstraction layer for alarm clock button inputs
  */
 
 #ifndef ALARM_CLOCK_HAL_HPP
@@ -23,16 +23,17 @@ class Button{
         bool pressed;
         bool long_pressed;
         bool held;
-        int get_press_duration(void);
-        alarm_id_t press_timer_alarm = 0;
+
+        uint64_t get_press_duration_us(void);
+        alarm_id_t get_press_timer_alarm_id(void) {return press_timer_alarm_id;}
 
         void button_pressed(void);
         void button_released(void);
         void long_press_timer_expired(void);
 
     private:
-        int time_pressed;
-        
+        absolute_time_t time_pressed;
+        alarm_id_t press_timer_alarm_id = 0;
 };
 
 // global button variables to store button presses and holds

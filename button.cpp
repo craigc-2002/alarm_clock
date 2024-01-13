@@ -3,7 +3,7 @@
  *
  * button.cpp
  *
- * Hardware abstraction layer for alarm clock inputs and outputs
+ * Hardware abstraction layer for alarm clock button inputs
  */
 
 #include "button.hpp"
@@ -28,16 +28,18 @@ void Button::button_pressed(void)
     long_pressed = false;
 
     // start 1000ms timer for long press, if timer expires before button released then long press is true
-    press_timer_alarm = add_alarm_in_ms(1000, button_press_timer_callback, this, false); // pointer to the button starting the timer is passed
+    press_timer_alarm_id = add_alarm_in_ms(1000, button_press_timer_callback, this, false); // pointer to the button starting the timer is passed
+
+    time_pressed = get_absolute_time();
 }
 
 void Button::button_released(void)
 {
     held = false;
-    if (press_timer_alarm)
+    if (press_timer_alarm_id)
     {
-        cancel_alarm(press_timer_alarm);
-        press_timer_alarm = 0;
+        cancel_alarm(press_timer_alarm_id);
+        press_timer_alarm_id = 0;
     }
 }
 
@@ -50,9 +52,16 @@ void Button::long_press_timer_expired(void)
         long_pressed = true;
     }else
     {
-        //pressed = true;
         long_pressed = false;
     }
+}
+
+uint64_t Button::get_press_duration_us(void)
+{
+    if (held)
+    {
+        return absolute_time_diff_us(time_pressed, get_absolute_time());
+    }else return 0;
 }
 
 // GPIO IRQ handler for button press events
@@ -110,7 +119,7 @@ void button_irq_handler(void)
 int64_t button_press_timer_callback(alarm_id_t id, void* data)
 {
     Button* button = (Button*) data;
-    if (id == button->press_timer_alarm) button->long_press_timer_expired();
+    if (id == button->get_press_timer_alarm_id()) button->long_press_timer_expired();
 
     return 0; // don't automatically reschedule the alarm
 }
