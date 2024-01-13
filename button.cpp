@@ -21,6 +21,40 @@ Button button_2;
 Button button_3;
 Button button_4;
 
+void Button::button_pressed(void)
+{
+    pressed = true;
+    held = true;
+    long_pressed = false;
+
+    // start 1000ms timer for long press, if timer expires before button released then long press is true
+    press_timer_alarm = add_alarm_in_ms(1000, button_press_timer_callback, this, false); // pointer to the button starting the timer is passed
+}
+
+void Button::button_released(void)
+{
+    held = false;
+    if (press_timer_alarm)
+    {
+        cancel_alarm(press_timer_alarm);
+        press_timer_alarm = 0;
+    }
+}
+
+void Button::long_press_timer_expired(void)
+{
+    // if button is still being held after alarm called, then it is a long press
+    if (held)
+    {
+        pressed = false;
+        long_pressed = true;
+    }else
+    {
+        //pressed = true;
+        long_pressed = false;
+    }
+}
+
 // GPIO IRQ handler for button press events
 void button_irq_handler(void)
 {
@@ -29,52 +63,56 @@ void button_irq_handler(void)
     if (event_mask & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(BUTTON_1, GPIO_IRQ_EDGE_RISE);
-        button_1.pressed = true;
-        button_1.held = true;
+        button_1.button_pressed();
     }else if (event_mask & GPIO_IRQ_EDGE_FALL)
     {
         gpio_acknowledge_irq(BUTTON_1, GPIO_IRQ_EDGE_FALL);
-        button_1.held = false;
+        button_1.button_released();
     }
 
     event_mask = gpio_get_irq_event_mask(BUTTON_2);
     if (gpio_get_irq_event_mask(BUTTON_2) & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(BUTTON_2, GPIO_IRQ_EDGE_RISE);
-        button_2.pressed = true;
-        button_2.held = true;
+        button_2.button_pressed();
     }
     else if (event_mask & GPIO_IRQ_EDGE_FALL)
     {
         gpio_acknowledge_irq(BUTTON_2, GPIO_IRQ_EDGE_FALL);
-        button_2.held = false;
+        button_2.button_released();
     }
 
     event_mask = gpio_get_irq_event_mask(BUTTON_3);
     if (gpio_get_irq_event_mask(BUTTON_3) & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(BUTTON_3, GPIO_IRQ_EDGE_RISE);
-        button_3.pressed = true;
-        button_3.held = true;
+        button_3.button_pressed();
     }
     else if (event_mask & GPIO_IRQ_EDGE_FALL)
     {
         gpio_acknowledge_irq(BUTTON_3, GPIO_IRQ_EDGE_FALL);
-        button_3.held = false;
+        button_3.button_released();
     }
 
     event_mask = gpio_get_irq_event_mask(BUTTON_4);
     if (gpio_get_irq_event_mask(BUTTON_4) & GPIO_IRQ_EDGE_RISE)
     {
         gpio_acknowledge_irq(BUTTON_4, GPIO_IRQ_EDGE_RISE);
-        button_4.pressed = true;
-        button_4.held = true;
+        button_4.button_pressed();
     }
     else if (event_mask & GPIO_IRQ_EDGE_FALL)
     {
         gpio_acknowledge_irq(BUTTON_4, GPIO_IRQ_EDGE_FALL);
-        button_4.held = false;
+        button_4.button_released();
     }
+}
+
+int64_t button_press_timer_callback(alarm_id_t id, void* data)
+{
+    Button* button = (Button*) data;
+    if (id == button->press_timer_alarm) button->long_press_timer_expired();
+
+    return 0; // don't automatically reschedule the alarm
 }
 
 void setup_buttons(void)

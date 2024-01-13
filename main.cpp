@@ -9,7 +9,6 @@
  * - use timer to update display with time every 100ms
  * - sleep the processor between updates
  * - display function of each button on screen
- * - implement long button press
  * - implemtent changing display contrast
  */
 
@@ -77,10 +76,11 @@ int main()
             {
                 display_date_time(&display, &t);
 
-                if (button_1.pressed)
+                if (button_1.long_pressed)
                 {
                     current_mode = TIME_EDIT;
                     button_1.pressed = false;
+                    button_1.long_pressed = false;
                 }
                 if (button_2.pressed) button_2.pressed = false;
                 if (button_3.pressed) button_3.pressed = false;

@@ -21,11 +21,18 @@
 class Button{
     public:
         bool pressed;
+        bool long_pressed;
         bool held;
         int get_press_duration(void);
+        alarm_id_t press_timer_alarm = 0;
+
+        void button_pressed(void);
+        void button_released(void);
+        void long_press_timer_expired(void);
 
     private:
         int time_pressed;
+        
 };
 
 // global button variables to store button presses and holds
@@ -36,6 +43,7 @@ extern Button button_4;
 
 // button HAL functions
 void button_irq_handler(void);
+int64_t button_press_timer_callback(alarm_id_t id, void* data);
 void setup_buttons(void);
 
 // button event functions
