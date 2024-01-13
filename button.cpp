@@ -27,8 +27,8 @@ void Button::button_pressed(void)
     held = true;
     long_pressed = false;
 
-    // start 1000ms timer for long press, if timer expires before button released then long press is true
-    press_timer_alarm_id = add_alarm_in_ms(1000, button_press_timer_callback, this, false); // pointer to the button starting the timer is passed
+    // start 500ms timer for long press, if timer expires before button released then long press is true
+    press_timer_alarm_id = add_alarm_in_ms(500, button_press_timer_callback, this, false); // pointer to the button starting the timer is passed
 
     time_pressed = get_absolute_time();
 }
