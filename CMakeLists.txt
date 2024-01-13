@@ -10,8 +10,8 @@ add_subdirectory(lib/pico-ssd1306)
 
 add_executable(alarm_clock
         main.cpp
-        hal.hpp
-        hal.cpp)
+        display.cpp
+        button.cpp)
 
 target_link_libraries(alarm_clock
         hardware_i2c

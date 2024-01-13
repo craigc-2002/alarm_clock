@@ -9,20 +9,19 @@
  * - use timer to update display with time every 100ms
  * - sleep the processor between updates
  * - display function of each button on screen
+ * - implement long button press
+ * - implemtent changing display contrast
  */
 
-#include "hardware/i2c.h"
-#include "hardware/gpio.h"
-#include "hardware/timer.h"
 #include "hardware/rtc.h"
-#include "hardware/irq.h"
 #include "pico/stdlib.h"
 #include "ssd1306.h"
 #include "textRenderer/TextRenderer.h"
 #include "shapeRenderer/ShapeRenderer.h"
 #include <cstdio>
 
-#include "hal.hpp"
+#include "button.hpp"
+#include "display.hpp"
 
 enum mode{
     TIME_DISPLAY,
