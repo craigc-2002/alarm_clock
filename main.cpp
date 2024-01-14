@@ -24,7 +24,8 @@
 
 enum mode{
     TIME_DISPLAY,
-    TIME_EDIT
+    TIME_EDIT,
+    CONTRAST_EDIT
 };
 
 enum time_edit_part{
@@ -84,7 +85,12 @@ int main()
                 }
                 if (button_2.pressed) button_2.pressed = false;
                 if (button_3.pressed) button_3.pressed = false;
-                if (button_4.pressed) button_4.pressed = false;
+                if (button_4.long_pressed)
+                {
+                    current_mode = CONTRAST_EDIT;
+                    button_4.pressed = false;
+                    button_4.long_pressed = false;
+                }
 
                 break;
             }
@@ -204,6 +210,37 @@ int main()
                     }
                 }
                 
+                break;
+            }
+
+            case CONTRAST_EDIT:
+            {
+                display_date_time(&display, &t);
+
+                if (button_1.pressed)
+                {
+                    current_mode = TIME_DISPLAY;
+                    button_1.pressed = false;
+                }
+                if (button_2.pressed || button_2.held)
+                {
+                    display.setContrast(255);
+                    button_2.pressed = false;
+                }
+                if (button_3.pressed || button_3.held)
+                {
+                    display.setContrast(1);
+                    button_3.pressed = false;
+                }
+                if (button_4.pressed) 
+                {
+                    current_mode = TIME_DISPLAY;
+                    button_4.pressed = false;
+                }
+
+                char mode_display[] = {"Contrast"};
+                pico_ssd1306::drawText(&display, font_8x8, mode_display, 0, 8);
+
                 break;
             }
         }
