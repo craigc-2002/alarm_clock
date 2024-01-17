@@ -1,5 +1,5 @@
 /* alarm_clock
- * Craig Cochrane, 2023
+ * Craig Cochrane, 2024
  *
  * display.cpp
  *
@@ -9,6 +9,7 @@
 #include "display.hpp"
 
 #include "hardware/gpio.h"
+#include "hardware/i2c.h"
 #include "pico/time.h"
 #include "ssd1306.h"
 #include "textRenderer/TextRenderer.h"
