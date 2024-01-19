@@ -18,7 +18,8 @@
 class TimeModificationState : public State
 {
     public:
-        TimeModificationState();
+        virtual void entry(void);
+
         virtual void display_task(pico_ssd1306::SSD1306* display);
 
         virtual State* button_1_press(void);
@@ -30,10 +31,10 @@ class TimeModificationState : public State
         virtual State* button_3_hold(void) {return button_3_press();}
 
     protected:
-        enum time_part{HOUR, MINUTE}; // to keep track of what part of the time is being modified
+        enum time_part{HOUR, MINUTE, SECOND, DOTW, DAY, MONTH, YEAR}; // to keep track of what part of the time is being modified
         time_part current_time_part;
         void next_time_part();
-        void previous_time_part() {next_time_part();}
+        void previous_time_part();
 
         datetime_t modified_time;
         virtual void increment_time();

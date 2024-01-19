@@ -36,7 +36,7 @@ AlarmClock::AlarmClock(void)
     gpio_init(PICO_DEFAULT_LED_PIN);
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-    current_state = new DisplayTimeState;
+    current_state = DisplayTimeState::get_instance();
 }
 
 void AlarmClock::process_event()
@@ -98,6 +98,8 @@ void AlarmClock::process_event()
 
     if (new_state != NULL)
     {
+        current_state->exit();
         current_state = new_state;
+        new_state->entry();
     }
 }

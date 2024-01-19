@@ -16,8 +16,12 @@
 class State
 {
     public:
+        // methods called at the entry and exit of the state
+        virtual void entry(void) {return;}
+        virtual void exit(void) {return;}
+
         // method to implement the state writing to display
-        virtual void display_task(pico_ssd1306::SSD1306* display) = 0;
+        virtual void display_task(pico_ssd1306::SSD1306* display) {return;}
 
         // methods to implement events
         // if the state is changed, the new state is returned, if not the NULL is returned 

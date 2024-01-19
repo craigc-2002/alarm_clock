@@ -12,23 +12,33 @@
 #include "hardware/rtc.h"
 #include "textRenderer/TextRenderer.h"
 
+void EditTimeState::entry(void)
+{
+    rtc_get_datetime(&modified_time);
+    TimeModificationState::entry();
+}
+
+void EditTimeState::exit(void)
+{
+    rtc_set_datetime(&modified_time);
+    sleep_ms(64); // delay to allow the RTC time to update
+}
+
 void EditTimeState::display_task(pico_ssd1306::SSD1306* display)
 {
-    char mode_display[] = {"Edit Mode"};
-    pico_ssd1306::drawText(display, font_8x8, mode_display, 0, 8);
+    char mode_display[] = {"Time Edit Mode"};
+    pico_ssd1306::drawText(display, font_8x8, mode_display, 0, 16);
 
     TimeModificationState::display_task(display);
 }
 
 State* EditTimeState::button_2_press(void)
 {
-    rtc_get_datetime(&modified_time);
     return TimeModificationState::button_2_press();
 }
 
 State* EditTimeState::button_3_press(void)
 {
-    rtc_get_datetime(&modified_time);
     return TimeModificationState::button_3_press();
 }
 

@@ -8,9 +8,7 @@
  * To Do:
  * - make event queue for button presses and other events
  * - add alarm functionality
- * 
- * - fix bug with seconds incrementing every time the time is updated
- * - implement setting the date
+ * - improve contrast setting
  * 
  * - use timer to update display with time every 100ms
  * - sleep the processor between updates

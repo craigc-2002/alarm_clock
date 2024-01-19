@@ -38,20 +38,26 @@ pico_ssd1306::SSD1306 initialise_display(void)
     return display;
 }
 
-void display_date_time(pico_ssd1306::SSD1306* display, datetime_t* t)
+void display_time(pico_ssd1306::SSD1306* display, datetime_t* t)
 {
-    // prepare the date and time strings to display on the screen
-    char date_display[11] = {0};
-    snprintf(date_display, 11, "%.2d/%.2d/%.4d", t->day, t->month, t->year);
-
     char time_display[6] = {0};
     snprintf(time_display, 6, "%.2d:%.2d", t->hour, t->min);
 
     char sec_display[4] = {0};
     snprintf(sec_display, 4, ":%.2d", t->sec);
 
-    // send temperature to display
-    pico_ssd1306::drawText(display, font_8x8, date_display, 0, 0);
     pico_ssd1306::drawText(display, font_16x32, time_display, TIME_X, TIME_Y);
     pico_ssd1306::drawText(display, font_12x16, sec_display, SEC_X, SEC_Y);
+}
+
+void display_date_time(pico_ssd1306::SSD1306* display, datetime_t* t)
+{
+    // prepare the date and time strings to display on the screen
+    char date_display[15] = {0};
+    snprintf(date_display, 15, "%s %.2d/%.2d/%.4d", days[t->dotw], t->day, t->month, t->year);
+
+    // send temperature to display
+    pico_ssd1306::drawText(display, font_8x8, date_display, 0, 0);
+
+    display_time(display, t);
 }
