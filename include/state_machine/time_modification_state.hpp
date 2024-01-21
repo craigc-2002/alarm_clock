@@ -26,7 +26,7 @@ class TimeModificationState : public State
         virtual State* button_2_press(void);
         virtual State* button_3_press(void);
         virtual State* button_4_press(void);
-
+        
         virtual State* button_2_hold(void) {return button_2_press();}
         virtual State* button_3_hold(void) {return button_3_press();}
 

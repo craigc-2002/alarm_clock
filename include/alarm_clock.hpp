@@ -11,16 +11,23 @@
 #define ALARMCLOCK_H
 
 #include "state_machine/state.hpp"
+#include "event_queue.hpp"
+#include "button.hpp"
 
 class AlarmClock{
     public:
         AlarmClock(void);
 
-        void process_event();
+        void process_event(EventQueue* event_queue);
         void display_task(pico_ssd1306::SSD1306* display) {current_state->display_task(display);}
 
     private:
         State* current_state;
+
+        // TO DO: move these functions to the State - only one function will need to be called with a button number passed in
+        State* dispatch_button_press(Button* button);
+        State* dispatch_button_long_press(Button* button);
+        State* displatch_button_hold(Button* button);
 };
 
 #endif

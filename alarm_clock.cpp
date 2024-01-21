@@ -14,6 +14,8 @@
 
 #include "state_machine/display_time_state.hpp"
 #include "button.hpp"
+#include "event.hpp"
+#include "event_queue.hpp"
 
 AlarmClock::AlarmClock(void)
 {
@@ -39,61 +41,38 @@ AlarmClock::AlarmClock(void)
     current_state = DisplayTimeState::get_instance();
 }
 
-void AlarmClock::process_event()
+void AlarmClock::process_event(EventQueue* event_queue)
 {
     State* new_state = NULL;
 
-    if (button_1.held) new_state = current_state->button_1_hold();
-    if (button_2.held) new_state = current_state->button_2_hold();
-    if (button_3.held) new_state = current_state->button_3_hold();
-    if (button_4.held) new_state = current_state->button_4_hold();
-
-    if (button_1.pressed) 
+    Event event = event_queue->get_event();
+    while (event.type != NONE)
     {
-        new_state = current_state->button_1_press();
-        button_1.pressed = false;
-    }
+        switch (event.type)
+        {
+            case BUTTON_PRESS:
+            {
+                Button* button = static_cast<Button*>(event.event_data);
+                new_state = dispatch_button_press(button);
+                break;
+            }
 
-    if (button_2.pressed)
-    {
-        new_state = current_state->button_2_press();
-        button_2.pressed = false;
-    }
+            case BUTTON_LONG_PRESS:
+            {
+                Button* button = static_cast<Button*>(event.event_data);
+                new_state = dispatch_button_long_press(button);
+                break;
+            }
 
-    if (button_3.pressed)
-    {
-        new_state = current_state->button_3_press();
-        button_3.pressed = false;
-    }
+            case BUTTON_HOLD:
+            {
+                Button* button = static_cast<Button*>(event.event_data);
+                new_state = displatch_button_hold(button);
+                break;
+            }
+        }
 
-    if (button_4.pressed)
-    {
-        new_state = current_state->button_4_press();
-        button_4.pressed = false;
-    }
-
-    if (button_1.long_pressed) 
-    {
-        new_state = current_state->button_1_long_press();
-        button_1.long_pressed = false;
-    }
-
-    if (button_2.long_pressed)
-    {
-        new_state = current_state->button_2_long_press();
-        button_2.long_pressed = false;
-    }
-
-    if (button_3.long_pressed)
-    {
-        new_state = current_state->button_3_long_press();
-        button_3.long_pressed = false;
-    }
-
-    if (button_4.long_pressed)
-    {
-        new_state = current_state->button_4_long_press();
-        button_4.long_pressed = false;
+        event = event_queue->get_event();
     }
 
     if (new_state != NULL)
@@ -102,4 +81,70 @@ void AlarmClock::process_event()
         current_state = new_state;
         new_state->entry();
     }
+}
+
+State* AlarmClock::dispatch_button_press(Button* button)
+{
+    State* new_state = NULL;
+    switch(button->num)
+    {
+        case 1:
+            new_state = current_state->button_1_press();
+            break;
+        case 2:
+            new_state = current_state->button_2_press();
+            break;
+        case 3:
+            new_state = current_state->button_3_press();
+            break;
+        case 4:
+            new_state = current_state->button_4_press();
+            break;
+    }
+
+    return new_state;
+}
+
+State* AlarmClock::dispatch_button_long_press(Button* button)
+{
+    State* new_state = NULL;
+    switch(button->num)
+    {
+        case 1:
+            new_state = current_state->button_1_long_press();
+            break;
+        case 2:
+            new_state = current_state->button_2_long_press();
+            break;
+        case 3:
+            new_state = current_state->button_3_long_press();
+            break;
+        case 4:
+            new_state = current_state->button_4_long_press();
+            break;
+    }
+
+    return new_state;
+}
+
+State* AlarmClock::displatch_button_hold(Button* button)
+{
+    State* new_state = NULL;
+    switch(button->num)
+    {
+        case 1:
+            new_state = current_state->button_1_hold();
+            break;
+        case 2:
+            new_state = current_state->button_2_hold();
+            break;
+        case 3:
+            new_state = current_state->button_3_hold();
+            break;
+        case 4:
+            new_state = current_state->button_4_hold();
+            break;
+    }
+
+    return new_state;
 }
