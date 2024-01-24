@@ -41,7 +41,7 @@ AlarmClock::AlarmClock(void)
     current_state = DisplayTimeState::get_instance();
 }
 
-void AlarmClock::process_event(EventQueue* event_queue)
+void AlarmClock::process_events(EventQueue* event_queue)
 {
     State* new_state = NULL;
 

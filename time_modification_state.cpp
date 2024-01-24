@@ -18,6 +18,7 @@
 void TimeModificationState::entry(void)
 {
     current_time_part = TimeModificationState::HOUR;
+    allow_hold = false; // block button 1 holds from being handled when the state is first entered since holding button 1 is used to enter the state
 }
 
 void TimeModificationState::display_task(pico_ssd1306::SSD1306* display)
@@ -93,6 +94,7 @@ void TimeModificationState::previous_time_part(void)
 
 State* TimeModificationState::button_1_press(void)
 {
+    allow_hold = true;
     if (current_time_part == HOUR)
     {
         return DisplayTimeState::get_instance();
@@ -105,18 +107,21 @@ State* TimeModificationState::button_1_press(void)
 
 State* TimeModificationState::button_2_press(void)
 {
+    allow_hold = true;
     increment_time();
     return NULL;
 }
 
 State* TimeModificationState::button_3_press(void)
 {
+    allow_hold = true;
     decrement_time();
     return NULL;
 }
 
 State* TimeModificationState::button_4_press(void)
 {
+    allow_hold = true;
     if (current_time_part == YEAR)
     {
         return DisplayTimeState::get_instance();
@@ -125,6 +130,21 @@ State* TimeModificationState::button_4_press(void)
         next_time_part();
         return NULL;
     }
+}
+
+State* TimeModificationState::button_1_hold(void)
+{
+    if (allow_hold)
+    {
+        previous_time_part();
+    }
+    return NULL;
+}
+
+State* TimeModificationState::button_4_hold(void)
+{
+    next_time_part();
+    return NULL;
 }
 
 void TimeModificationState::increment_time(void)
@@ -167,6 +187,8 @@ void TimeModificationState::increment_time(void)
             break;
         }
     }
+
+    check_time();
 }
 
 void TimeModificationState::decrement_time(void)
@@ -209,4 +231,25 @@ void TimeModificationState::decrement_time(void)
             break;
         }
     }
+
+    check_time();
+}
+
+void TimeModificationState::check_time(void)
+{
+    // check that each of the values in the modified_time struct are within the correct bounds and wrap around if not
+    if (modified_time.hour < 0) modified_time.hour = 24;
+    if (modified_time.min < 0) modified_time.min = 59;
+    if (modified_time.sec < 0) modified_time.sec = 59;
+    if (modified_time.day < 1) modified_time.day = 31;
+    if (modified_time.dotw < 0) modified_time.dotw = 6;
+    if (modified_time.month < 1) modified_time.month = 12;
+    if (modified_time.year < 0) modified_time.year = 0;
+
+    if (modified_time.hour > 24) modified_time.hour = 0;
+    if (modified_time.min > 59) modified_time.min = 0;
+    if (modified_time.sec > 59) modified_time.sec = 0;
+    if (modified_time.day > 31) modified_time.day = 1;
+    if (modified_time.dotw > 6) modified_time.dotw = 0;
+    if (modified_time.month > 12) modified_time.month = 1;
 }

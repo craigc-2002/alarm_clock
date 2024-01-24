@@ -8,9 +8,6 @@
  * To Do:
  * - add alarm functionality
  * - improve contrast setting
- * - add button hold for moving through time edit parts
- * 
- * - change State API so that all button presses, holds, etc go through a function with button number passed
  * 
  * - use timer to update display with time every 100ms
  * - sleep the processor between updates
@@ -37,7 +34,7 @@ int main()
     {
         display.clear();
 
-        alarm_clock.process_event(&event_queue);
+        alarm_clock.process_events(&event_queue);
         alarm_clock.display_task(&display);
 
         display.sendBuffer();

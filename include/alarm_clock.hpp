@@ -18,7 +18,7 @@ class AlarmClock{
     public:
         AlarmClock(void);
 
-        void process_event(EventQueue* event_queue);
+        void process_events(EventQueue* event_queue);
         void display_task(pico_ssd1306::SSD1306* display) {current_state->display_task(display);}
 
     private:

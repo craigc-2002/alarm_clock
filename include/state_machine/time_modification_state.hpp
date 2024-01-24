@@ -27,8 +27,10 @@ class TimeModificationState : public State
         virtual State* button_3_press(void);
         virtual State* button_4_press(void);
         
+        virtual State* button_1_hold(void);
         virtual State* button_2_hold(void) {return button_2_press();}
         virtual State* button_3_hold(void) {return button_3_press();}
+        virtual State* button_4_hold(void);
 
     protected:
         enum time_part{HOUR, MINUTE, SECOND, DOTW, DAY, MONTH, YEAR}; // to keep track of what part of the time is being modified
@@ -37,8 +39,12 @@ class TimeModificationState : public State
         void previous_time_part();
 
         datetime_t modified_time;
-        virtual void increment_time();
-        virtual void decrement_time();
+        virtual void increment_time(void);
+        virtual void decrement_time(void);
+        virtual void check_time(void);
+
+    private:
+        bool allow_hold; // used to disable reacting to button 1 holds when the state has just been entered
 };
 
 #endif
