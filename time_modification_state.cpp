@@ -265,7 +265,7 @@ void TimeModificationState::decrement_time(void)
 void TimeModificationState::check_time(void)
 {
     // check that each of the values in the modified_time struct are within the correct bounds and wrap around if not
-    if (modified_time.hour < 0) modified_time.hour = 24;
+    if (modified_time.hour < 0) modified_time.hour = 23;
     if (modified_time.min < 0) modified_time.min = 59;
     if (modified_time.sec < 0) modified_time.sec = 59;
     if (modified_time.day < 1) modified_time.day = 31;
