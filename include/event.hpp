@@ -14,7 +14,8 @@ enum event_type
     NONE,
     BUTTON_PRESS,
     BUTTON_LONG_PRESS,
-    BUTTON_HOLD
+    BUTTON_HOLD,
+    ALARM
 };
 
 class Event{

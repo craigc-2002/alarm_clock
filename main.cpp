@@ -6,12 +6,12 @@
  * Main program loop for reading inputs, logic and writing to display
  * 
  * To Do:
- * - add alarm functionality
  * - improve contrast setting
- * 
  * - use timer to update display with time every 100ms
  * - sleep the processor between updates
  * - display function of each button on screen
+ * 
+ * - add stopwatch mode
  */
 
 #include "pico/stdlib.h"
@@ -20,6 +20,7 @@
 #include "event_queue.hpp"
 #include "button.hpp"
 #include "display.hpp"
+#include "alarm_handler.hpp"
 
 int main()
 {
@@ -28,6 +29,7 @@ int main()
     pico_ssd1306::SSD1306 display = initialise_display();
 
     setup_buttons(&event_queue);
+    setup_alarm(&event_queue);
 
     // main program loop
     while (1)

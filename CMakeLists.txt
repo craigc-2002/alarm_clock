@@ -13,11 +13,14 @@ add_executable(alarm_clock
         alarm_clock.cpp
         display.cpp
         button.cpp
+        alarm_handler.cpp
         event_queue.cpp
         event.cpp
         time_modification_state.cpp
         display_time_state.cpp
         edit_time_state.cpp
+        edit_alarm_state.cpp
+        alarm_state.cpp
         change_contrast_state.cpp)
 
 target_include_directories(alarm_clock

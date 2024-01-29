@@ -22,8 +22,6 @@ class EditTimeState : public TimeModificationState
         virtual void exit(void);
         
         void display_task(pico_ssd1306::SSD1306* display);
-        virtual State* button_2_press(void);
-        virtual State* button_3_press(void);
 
         static State* get_instance(void);
 };

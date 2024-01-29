@@ -20,7 +20,7 @@ class TimeModificationState : public State
     public:
         virtual void entry(void);
 
-        virtual void display_task(pico_ssd1306::SSD1306* display);
+        virtual void display_task(pico_ssd1306::SSD1306* display, bool display_date);
 
         virtual State* button_1_press(void);
         virtual State* button_2_press(void);
@@ -28,8 +28,8 @@ class TimeModificationState : public State
         virtual State* button_4_press(void);
         
         virtual State* button_1_hold(void);
-        virtual State* button_2_hold(void) {return button_2_press();}
-        virtual State* button_3_hold(void) {return button_3_press();}
+        virtual State* button_2_hold(void);
+        virtual State* button_3_hold(void);
         virtual State* button_4_hold(void);
 
     protected:

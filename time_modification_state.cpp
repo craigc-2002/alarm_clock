@@ -21,9 +21,15 @@ void TimeModificationState::entry(void)
     allow_hold = false; // block button 1 holds from being handled when the state is first entered since holding button 1 is used to enter the state
 }
 
-void TimeModificationState::display_task(pico_ssd1306::SSD1306* display)
+void TimeModificationState::display_task(pico_ssd1306::SSD1306* display, bool display_date)
 {
-    display_date_time(display, &modified_time);
+    if (display_date)
+    {
+        display_date_time(display, &modified_time);
+    }else
+    {
+        display_time(display, &modified_time);
+    }
 
     // draw line over/under part of the time/date currently being edited
     switch (current_time_part)
@@ -141,9 +147,30 @@ State* TimeModificationState::button_1_hold(void)
     return NULL;
 }
 
+State* TimeModificationState::button_2_hold(void)
+{
+    if (allow_hold)
+    {
+        return button_2_press();
+    }
+    return NULL;
+}
+
+State* TimeModificationState::button_3_hold(void)
+{
+    if (allow_hold)
+    {
+        return button_3_press();
+    }
+    return NULL;
+}
+
 State* TimeModificationState::button_4_hold(void)
 {
-    next_time_part();
+    if (allow_hold)
+    {
+        next_time_part();
+    }
     return NULL;
 }
 

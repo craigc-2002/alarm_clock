@@ -19,7 +19,10 @@ class DisplayTimeState : public State
         void display_task(pico_ssd1306::SSD1306* display) override;
 
         State* button_1_long_press(void) override;
+        State* button_2_long_press(void) override;
         State* button_4_long_press(void) override;
+
+        State* alarm_ring(void) override;
 
         static State* get_instance(void);
 };

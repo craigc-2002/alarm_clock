@@ -70,6 +70,12 @@ void AlarmClock::process_events(EventQueue* event_queue)
                 new_state = displatch_button_hold(button);
                 break;
             }
+
+            case ALARM:
+            {
+                new_state = current_state->alarm_ring();
+                break;
+            }
         }
 
         event = event_queue->get_event();

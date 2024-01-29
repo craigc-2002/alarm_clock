@@ -15,6 +15,8 @@
 
 #include "state_machine/edit_time_state.hpp"
 #include "state_machine/change_contrast_state.hpp"
+#include "state_machine/edit_alarm_state.hpp"
+#include "state_machine/alarm_state.hpp"
 #include "display.hpp"
 
 void DisplayTimeState::display_task(pico_ssd1306::SSD1306* display)
@@ -24,14 +26,24 @@ void DisplayTimeState::display_task(pico_ssd1306::SSD1306* display)
     display_date_time(display, &t);
 }
 
-State* DisplayTimeState::button_1_long_press()
+State* DisplayTimeState::button_1_long_press(void)
 {
     return EditTimeState::get_instance();
 }
 
-State* DisplayTimeState::button_4_long_press()
+State* DisplayTimeState::button_2_long_press(void)
+{
+    return EditAlarmState::get_instance();
+}
+
+State* DisplayTimeState::button_4_long_press(void)
 {
     return ChangeContrastState::get_instance();
+}
+
+State* DisplayTimeState::alarm_ring(void)
+{
+    return AlarmState::get_instance();
 }
 
 State* DisplayTimeState::get_instance(void)

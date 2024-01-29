@@ -29,17 +29,7 @@ void EditTimeState::display_task(pico_ssd1306::SSD1306* display)
     char mode_display[] = {"Time Edit Mode"};
     pico_ssd1306::drawText(display, font_8x8, mode_display, 0, 16);
 
-    TimeModificationState::display_task(display);
-}
-
-State* EditTimeState::button_2_press(void)
-{
-    return TimeModificationState::button_2_press();
-}
-
-State* EditTimeState::button_3_press(void)
-{
-    return TimeModificationState::button_3_press();
+    TimeModificationState::display_task(display, true);
 }
 
 State* EditTimeState::get_instance(void)
