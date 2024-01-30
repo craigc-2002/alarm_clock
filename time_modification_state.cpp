@@ -273,7 +273,7 @@ void TimeModificationState::check_time(void)
     if (modified_time.month < 1) modified_time.month = 12;
     if (modified_time.year < 0) modified_time.year = 0;
 
-    if (modified_time.hour > 24) modified_time.hour = 0;
+    if (modified_time.hour > 23) modified_time.hour = 0;
     if (modified_time.min > 59) modified_time.min = 0;
     if (modified_time.sec > 59) modified_time.sec = 0;
     if (modified_time.day > 31) modified_time.day = 1;
