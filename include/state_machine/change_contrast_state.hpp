@@ -19,12 +19,16 @@ class ChangeContrastState : public DisplayTimeState
         ChangeContrastState() : contrast(255) {}
         void display_task(pico_ssd1306::SSD1306* display);
 
-        State* button_1_press(void);
-        State* button_2_press(void);
-        State* button_3_press(void);
+        State* button_1_press(void) override;
+        State* button_2_press(void) override;
+        State* button_3_press(void) override;
 
         State* button_1_long_press(void) {return NULL;}
+        State* button_2_long_press(void) {return NULL;}
         State* button_4_long_press(void) {return NULL;}
+
+        State* button_2_hold(void) override;
+        State* button_3_hold(void) override;
 
         static State* get_instance(void);
 

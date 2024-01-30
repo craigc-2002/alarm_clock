@@ -6,12 +6,11 @@
  * Main program loop for reading inputs, logic and writing to display
  * 
  * To Do:
- * - improve contrast setting
- * - use timer to update display with time every 100ms
- * - sleep the processor between updates
  * - display function of each button on screen
- * 
  * - add stopwatch mode
+ * - add thermometer
+ * - add RGB
+ * - add alarm buzzer
  */
 
 #include "pico/stdlib.h"
