@@ -48,6 +48,11 @@ State* ChangeContrastState::button_3_press(void)
     return NULL;
 }
 
+State* ChangeContrastState::button_4_press(void)
+{
+    return DisplayTimeState::get_instance();
+}
+
 State* ChangeContrastState::button_2_hold(void)
 {
     return button_2_press();

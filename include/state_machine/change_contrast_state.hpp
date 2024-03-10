@@ -22,6 +22,7 @@ class ChangeContrastState : public DisplayTimeState
         State* button_1_press(void) override;
         State* button_2_press(void) override;
         State* button_3_press(void) override;
+        State* button_4_press(void) override;
 
         State* button_1_long_press(void) {return NULL;}
         State* button_2_long_press(void) {return NULL;}
