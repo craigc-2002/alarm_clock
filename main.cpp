@@ -10,7 +10,6 @@
  * - add stopwatch mode
  * - add thermometer
  * - add RGB
- * - add alarm buzzer
  */
 
 #include "pico/stdlib.h"
