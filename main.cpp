@@ -16,7 +16,7 @@
 
 #include "alarm_clock.hpp"
 #include "event_queue.hpp"
-#include "button.hpp"
+#include "buttons.hpp"
 #include "display.hpp"
 #include "alarm_handler.hpp"
 

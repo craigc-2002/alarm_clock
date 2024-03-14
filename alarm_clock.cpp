@@ -13,7 +13,7 @@
 #include "hardware/gpio.h"
 
 #include "state_machine/display_time_state.hpp"
-#include "button.hpp"
+#include "buttons.hpp"
 #include "event.hpp"
 #include "event_queue.hpp"
 

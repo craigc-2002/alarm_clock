@@ -12,7 +12,7 @@
 
 #include "state_machine/state.hpp"
 #include "event_queue.hpp"
-#include "button.hpp"
+#include "buttons.hpp"
 
 class AlarmClock{
     public:
