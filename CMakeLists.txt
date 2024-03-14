@@ -13,6 +13,8 @@ add_executable(alarm_clock
         alarm_clock.cpp
         display.cpp
         button.cpp
+        buzzer.cpp
+        ring_alarm.cpp
         alarm_handler.cpp
         event_queue.cpp
         event.cpp
@@ -33,7 +35,8 @@ target_link_libraries(alarm_clock
         hardware_timer
         hardware_rtc
         hardware_irq
+        hardware_pwm
+        hardware_clocks
         pico_ssd1306)
 
 pico_add_extra_outputs(alarm_clock)
-

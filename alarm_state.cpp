@@ -11,6 +11,7 @@
 #include "ssd1306.h"
 #include "textRenderer/TextRenderer.h"
 #include "state_machine/display_time_state.hpp"
+#include "ring_alarm.hpp"
 
 void AlarmState::display_task(pico_ssd1306::SSD1306* display)
 {
@@ -18,6 +19,16 @@ void AlarmState::display_task(pico_ssd1306::SSD1306* display)
     pico_ssd1306::drawText(display, font_8x8, mode_display, 0, 16);
 
     DisplayTimeState::display_task(display);
+}
+
+void AlarmState::entry(void)
+{
+    ring_alarm();
+}
+
+void AlarmState::exit(void)
+{
+    alarm_off();
 }
 
 State* AlarmState::button_1_press(void)

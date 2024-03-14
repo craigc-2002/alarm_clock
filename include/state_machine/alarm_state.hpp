@@ -17,6 +17,9 @@ class AlarmState : public DisplayTimeState
     public:
         void display_task(pico_ssd1306::SSD1306* display) override;
 
+        void entry(void) override;
+        void exit(void) override;
+
         State* button_1_press(void) override;
         State* button_2_press(void) override;
         State* button_3_press(void) override;
